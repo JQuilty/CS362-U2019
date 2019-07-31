@@ -27,33 +27,38 @@ testAll: dominion.o testSuite.c
 interface.o: interface.h interface.c
 	gcc -c interface.c -g  $(CFLAGS)
 
-runtests: testDrawCard 
-	./testDrawCard &> unittestresult.out
-	gcov dominion.c >> unittestresult.out
-	cat dominion.c.gcov >> unittestresult.out
+#runtests: testDrawCard 
+#	./testDrawCard &> unittestresult.out
+#	gcov dominion.c >> unittestresult.out
+#	cat dominion.c.gcov >> unittestresult.out
 
+randomtestresults: randomtestcard1 randomtestcard2 randomtestcard3
+	touch unittestresults.out
+
+	./randomtestcard1 >> randomtestresults.out
+	./randomtestcard2 >> randomtestresults.out
+	./randomtestcard3 >> randomtestresults.out
+
+	gcov -b randomtestcard1.c >> randomtestresults.out
+	gcov -b randomtestcard2.c >> randomtestresults.out
+	gcov -b randomtestcard3.c >> randomtestresults.out
+
+	gcov dominion.c -b -f >> randomtestresults.out
+	cat randomtestresults.out
+
+randomtestcard1: randomtestcard1.c dominion.o rngs.o
+	gcc -o randomtestcard1 -g  randomtestcard1.c dominion.o rngs.o $(CFLAGS)
+
+randomtestcard2: randomtestcard2.c dominion.o rngs.o
+	gcc -o randomtestcard2 -g  randomtestcard2.c dominion.o rngs.o $(CFLAGS)
+
+randomtestcard3: randomtestcard3.c dominion.o rngs.o
+	gcc -o randomtestcard3 -g  randomtestcard3.c dominion.o rngs.o $(CFLAGS)
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
 all: playdom player 
-
-unittestresults:
-    ./unittest1.c &> unittestresult.out
-    gcov unittest1.c >> unittestresult.out
-    cat unittest1.c >> unittestresult.out
-    ./unittest2.c &> unittestresult.out
-    gcov unittest2.c >> unittestresult.out
-    cat unittest2.c >> unittestresult.out
-    ./unittest3.c &> unittestresult.out
-    gcov unittest3.c >> unittestresult.out
-    cat unittest3.c >> unittestresult.out
-    ./unittest4.c &> unittestresult.out
-    gcov unittest4.c >> unittestresult.out
-    cat unittest4.c >> unittestresult.out
-    ./unittest5.c &> unittestresult.out
-    gcov unittest5.c >> unittestresult.out
-    cat unittest5.c >> unittestresult.out
 
 clean:
 	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
