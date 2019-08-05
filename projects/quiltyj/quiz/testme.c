@@ -2,19 +2,43 @@
 #include<string.h>
 #include<stdlib.h>
 #include<time.h>
+#include<math.h>
 
 char inputChar()
 {
-    // TODO: rewrite this function
-    return ' ';
+    //Filling the array with all possible characters that infulence the if statements
+    char characterArray[9] = { ' ', 'a', 'x', '[', '(', '{','}', ')', ']' };
+    
+    //Getting a random element to use as an input
+	int randomElement = (rand() % 9);
+    
+    //Returning the number corresponding to the random element
+    return characterArray[randomElement];
 }
 
 char *inputString()
 {
-    // TODO: rewrite this function
-    return "";
+    //A string to hold the characters with a null terminator
+    //This would segfault without static, so I guess there was some scope issue without it. 
+	static char returnedString[6] = {' ', ' ', ' ', ' ', ' ', '\0'};
+	
+    //In the last if statement, reset with a null terminator will get us to error and terminate
+    char terminateChars[5] = "reset";
+	
+    //This will randomly jumble up r e s e t \n so we get a string to pass in.
+    //This mixed with the random char in inputChar will let us get random values
+    //to pass through the giant if branches that we see in testme(). Just by pure brute force
+    //we can eventually get "reset\n" and kill the loop.
+    for (int i = 0; i < 5; i++)
+    {
+		int swapIndex = (rand() % 5);
+		returnedString[i] = terminateChars[swapIndex];
+	}
+
+    return returnedString;
 }
 
+//Everything below here is from the sample file
 void testme()
 {
   int tcCount = 0;
@@ -31,7 +55,7 @@ void testme()
     if (c == '[' && state == 0) state = 1;
     if (c == '(' && state == 1) state = 2;
     if (c == '{' && state == 2) state = 3;
-    if (c == ' '&& state == 3) state = 4;
+    if (c == ' ' && state == 3) state = 4;
     if (c == 'a' && state == 4) state = 5;
     if (c == 'x' && state == 5) state = 6;
     if (c == '}' && state == 6) state = 7;
@@ -55,3 +79,4 @@ int main(int argc, char *argv[])
     testme();
     return 0;
 }
+
