@@ -2,16 +2,15 @@
 #include "dominion_helpers.h"
 #include <string.h>
 #include <stdio.h>
-#include <math.h>
 #include <assert.h>
 #include "rngs.h"
+#include <stdlib.h>
 
-void mineTest()
+void cardTest3()
 {
 	/*
 	 * Note that I'm using the testUpdateCoins.c as somewhat of a template for testing.
 	 */
-
     //Variables
 	int addedCoins = 0;
 	int buyIncrement = 1;
@@ -23,11 +22,10 @@ void mineTest()
 	int discardCount = 1;
 	int handPos = 0;
 	int newCards = 0;
-	int numPlayers = 2;
+	int numPlayers = 5;
 	int seed = 500;
 	int shuffleCount = 0;
 
-	int* tributeRevealedCards[3] = { 1, 2, 3};
 
 	//Setting up structs for testing
 	struct gameState G, testingBoard, testingBoard2;
@@ -39,29 +37,15 @@ void mineTest()
 	initializeGame(numPlayers, k, seed, &G);
 	initializeGame(numPlayers, k, seed, &testingBoard);
 
-    printf ("Starting the test for Mine.\n");
-    memcpy(&testingBoard, &G, sizeof(struct gameState));
+	//Having the first player draw a card
+	drawCard(0, &G);
 
-    int returnValue = selectMine(&testingBoard, currentPlayer, 6, 1, 1);
-
-    //Checking the return value;
-    printf("SelectMine's return was %d\n", returnValue);
-
-    if (returnValue != -1)
-    {
-    	printf("Handcount = %d, Original = %d\n", testingBoard.handCount[currentPlayer], G.handCount[currentPlayer]);
-    	printf("Coins = %d, Original = %d\n", testingBoard.coins, G.coins);
-    }
+	printf("G Deck Count = %d, testingBoardDeckCount = %d\n", G.deckCount[0], testingBoard.deckCount[0]);
+	printf("G P1 Handcount = %d, testingBoard P1 handcount = %d\n", G.handCount[0], testingBoard.handCount[0]);
 }
 
-int main ()
+int main()
 {
-	mineTest();
+	cardTest5();
 	return 0;
-
-/*	if (initializeGame(numplayers, k[10], seed, TheGame) == 0)
-		printf("Success on initGame!\n");
-	else
-		printf("initializeGame broken!");*/
-
 }

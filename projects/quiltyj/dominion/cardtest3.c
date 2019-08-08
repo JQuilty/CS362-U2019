@@ -2,36 +2,57 @@
 #include "dominion_helpers.h"
 #include <string.h>
 #include <stdio.h>
-#include <math.h>
 #include <assert.h>
 #include "rngs.h"
+#include <stdlib.h>
 
-
-int main () 
+void cardTest3()
 {
-		//Note that for simplicity, I'm re-using some of the code from main2 in the original player.c
+	/*
+	 * Note that I'm using the testUpdateCoins.c as somewhat of a template for testing.
+	 */
+    //Variables
+	int addedCoins = 0;
+	int buyIncrement = 1;
+	int bonus = 0;
+	int bonusPointer = &bonus;
+	int choiceFalse = 0;
+	int choiceTrue = 1;
+	int currentPlayer = 0;
+	int discardCount = 1;
+	int handPos = 0;
+	int newCards = 0;
+	int numPlayers = 2;
+	int seed = 500;
+	int shuffleCount = 0;
+
+
+	//Setting up structs for testing
+	struct gameState G, testingBoard, testingBoard2;
+
+    //Note that for simplicity, I'm re-using some of the code from main2 in the original player.c
 	int k[10] = {adventurer, gardens, embargo, village, minion, mine, cutpurse, sea_hag, tribute, smithy};
-	int choice1 = 1;
-	int choice2 = 1;
-	int choice3 = 1;
-	int handPos = 3;
-	int bonusbase = 1;
-	int numplayers = 2;
-	int *bonus = &bonusbase;
-	int currentPlayer = 1;
-	int seed = 100;
-	
-	struct gameState g;
-	struct gamestate* TheGame = &g;
-	initializeGame(numplayers, k[10], seed, TheGame);
-	//Saves current value of whoseturn
-	int turnTest = TheGame->whoseTurn;
-	printf ("Starting the test for ending the turn.\n");
-	
-	//Compares the value of states. If there's no change in state from where it was at start, something failed.
-	if ( TheGame->whoseTurn == turnTest)
-		printf("Failure on endTurn!\n");
-	else
-		printf("endTurn success!\n");
-	
+
+    //Initialize a game
+	initializeGame(numPlayers, k, seed, &G);
+	initializeGame(numPlayers, k, seed, &testingBoard);
+
+	//Invoking the end of a turn
+	endTurn(&G);
+
+	//Checking that the turns can switch.
+	int playerValue1 = whoseTurn(&G);
+	int playerValue2 = whoseTurn(&testingBoard);
+	printf("Current player of G is %d, current player of testingBoard is %d.\n", playerValue1, playerValue2);
+
+	//Checking that coins get zeroed out
+	int coinValue1 = G.coins;
+	int coinValue2 = testingBoard.coins;
+	printf("Current coins of G is %d, current coins of testingBoard is %d.\n", coinValue1, coinValue2);
+}
+
+int main()
+{
+	cardTest3();
+	return 0;
 }
