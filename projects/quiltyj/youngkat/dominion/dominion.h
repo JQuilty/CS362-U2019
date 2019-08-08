@@ -100,6 +100,21 @@ int playCard(int handPos, int choice1, int choice2, int choice3,
 int buyCard(int supplyPos, struct gameState *state);
 /* Buy card with supply index supplyPos */
 
+int Baron(int choice1, struct gameState *state, int currentPlayer);
+/* Perform appropriate actions when Baron card is played*/
+
+int Minion(int choice1, int choice2, struct gameState *state, int handPos, int currentPlayer);
+/* Perform appropriate actions when Minion card is played*/
+
+int Ambassador(int choice1, int choice2, struct gameState *state, int handPos, int currentPlayer);
+/* Perform appropriate actions when Ambassador card is played*/
+
+int Tribute(struct gameState *state, int handPos, int currentPlayer, int nextPlayer);
+/* Perform appropriate actions when Tribute card is played*/
+
+int Mine(int choice1, int choice2, struct gameState *state, int handPos, int currentPlayer);
+/* Perform appropriate actions when Mine card is played*/
+
 int numHandCards(struct gameState *state);
 /* How many cards current player has in hand */
 
@@ -128,9 +143,4 @@ int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 /* Set array position of each player who won (remember ties!) to
    1, others to 0 */
 
-void selectBaron(int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus, int currentPlayer);
-void selectMinion(int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus, int currentPlayer);
-int selectAmbassador(int choice1, int choice2, struct gameState *state, int currentPlayer, int handPos);
-void selectTribute(struct gameState *state, int currentPlayer, int nextPlayer, int* tributeRevealedCards);
-int selectMine(struct gameState *state, int currentPlayer, int choice1, int choice2, int handPos);
 #endif
